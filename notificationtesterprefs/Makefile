@@ -1,13 +1,13 @@
-ARCHS = armv7 arm64
-TARGET = iphone:clang:latest:latest
 
-include theos/makefiles/common.mk
+include $(THEOS)/makefiles/common.mk
 
 BUNDLE_NAME = NotificationTesterPrefs
+
 NotificationTesterPrefs_FILES = NotificationTesterPrefs.mm
 NotificationTesterPrefs_INSTALL_PATH = /Library/PreferenceBundles
 NotificationTesterPrefs_FRAMEWORKS = UIKit
 NotificationTesterPrefs_PRIVATE_FRAMEWORKS = Preferences
+NotificationTesterPrefs_CFLAGS = -fobjc-arc
 
 include $(THEOS_MAKE_PATH)/bundle.mk
 

@@ -1,17 +1,18 @@
-ARCHS = armv7 arm64
-TARGET = iphone:clang:latest:latest
-THEOS_BUILD_DIR = debs
+export ARCHS = arm64
+export TARGET = iphone:clang:14.5:12.0
+
+INSTALL_TARGET_PROCESSES = SpringBoard
 
 include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = NotificationTester
 NotificationTester_FILES = Tweak.xm
-NotificationTester_FRAMEWORKS = UIKit
-NotificationTester_LIBRARIES = bulletin sqlite3
+NotificationTester_FRAMEWORKS = UIKit BulletinBoard
+NotificationTester_LIBRARIES = sqlite3
+NotificationTester_CFLAGS = -fobjc-arc
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 
-after-install::
-	install.exec "killall -9 SpringBoard"
 SUBPROJECTS += notificationtesterprefs
+
 include $(THEOS_MAKE_PATH)/aggregate.mk

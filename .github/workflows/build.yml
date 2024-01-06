@@ -1,0 +1,27 @@
+name: Build
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+
+      - name: Build Rootless Package
+        uses: L1ghtmann/theos-build@main
+        with:
+          extra_args: THEOS_PACKAGE_SCHEME=rootless FINALPACKAGE=1
+
+      - name: Build Rootful Package
+        uses: L1ghtmann/theos-build@main
+        with:
+          extra_args: FINALPACKAGE=1
+
+      - name: Attach Packages To Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          export TAG="${GITHUB_REF#refs/tags/}"
+          gh release upload "$TAG" packages/*.deb
