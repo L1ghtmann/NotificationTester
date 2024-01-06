@@ -55,26 +55,26 @@ static BBServer* bbServer;
 		if (randomApps) {
 			bundleID = [self randomID];
 		}
+
+		BBBulletin* bulletin = [[%c(BBBulletin) alloc] init];
+		bulletin.title = [NSString stringWithFormat:@"Test %d", i];
+		bulletin.message = customText;
+		bulletin.sectionID = bundleID;
+		bulletin.bulletinID = [[NSProcessInfo processInfo] globallyUniqueString];
+		bulletin.recordID = [[NSProcessInfo processInfo] globallyUniqueString];
+		bulletin.publisherBulletinID = [[NSProcessInfo processInfo] globallyUniqueString];
+		bulletin.date = [NSDate new];
+		bulletin.clearable = YES;
+		bulletin.showsMessagePreview = YES;
+
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+			if(bbServer){
+				dispatch_sync(__BBServerQueue, ^{
+					[bbServer publishBulletin:bulletin destinations:4];
+				});
+			}
+		});
 	}
-
-	BBBulletin* bulletin = [[%c(BBBulletin) alloc] init];
-	bulletin.title = @"Test";
-	bulletin.message = customText;
-	bulletin.sectionID = bundleID;
-	bulletin.bulletinID = [[NSProcessInfo processInfo] globallyUniqueString];
-	bulletin.recordID = [[NSProcessInfo processInfo] globallyUniqueString];
-	bulletin.publisherBulletinID = [[NSProcessInfo processInfo] globallyUniqueString];
-	bulletin.date = [NSDate new];
-	bulletin.clearable = YES;
-	bulletin.showsMessagePreview = YES;
-
-	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-		if(bbServer){
-			dispatch_sync(__BBServerQueue, ^{
-				[bbServer publishBulletin:bulletin destinations:4];
-			});
-		}
-	});
 }
 
 + (void)normalNotification {
@@ -82,23 +82,23 @@ static BBServer* bbServer;
 		if (randomApps) {
 			bundleID = [self randomID];
 		}
-	}
 
-	BBBulletin* bulletin = [[%c(BBBulletin) alloc] init];
-	bulletin.title = @"Test";
-	bulletin.message = customText;
-	bulletin.sectionID = bundleID;
-	bulletin.bulletinID = [[NSProcessInfo processInfo] globallyUniqueString];
-	bulletin.recordID = [[NSProcessInfo processInfo] globallyUniqueString];
-	bulletin.publisherBulletinID = [[NSProcessInfo processInfo] globallyUniqueString];
-	bulletin.date = [NSDate new];
-	bulletin.clearable = YES;
-	bulletin.showsMessagePreview = YES;
+		BBBulletin* bulletin = [[%c(BBBulletin) alloc] init];
+		bulletin.title = [NSString stringWithFormat:@"Test %d", i];
+		bulletin.message = customText;
+		bulletin.sectionID = bundleID;
+		bulletin.bulletinID = [[NSProcessInfo processInfo] globallyUniqueString];
+		bulletin.recordID = [[NSProcessInfo processInfo] globallyUniqueString];
+		bulletin.publisherBulletinID = [[NSProcessInfo processInfo] globallyUniqueString];
+		bulletin.date = [NSDate new];
+		bulletin.clearable = YES;
+		bulletin.showsMessagePreview = YES;
 
-	if(bbServer){
-		dispatch_sync(__BBServerQueue, ^{
-			[bbServer publishBulletin:bulletin destinations:15];
-		});
+		if(bbServer){
+			dispatch_sync(__BBServerQueue, ^{
+				[bbServer publishBulletin:bulletin destinations:15];
+			});
+		}
 	}
 }
 
